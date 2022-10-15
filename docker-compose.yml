@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  app:
+    env_file: .env
+    build: .
+    command:
+      - /bin/shawty
+      - -database
+      - /data/shawty.db
+      - -admin-user
+      - $ADMIN_USER
+      - -admin-password
+      - $ADMIN_PASSWORD
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.shawty.rule=Host(`l.devminer.xyz`)
+      - traefik.http.routers.shawty.entrypoints=websecure
+      - traefik.http.services.shawty-service.loadbalancer.server.port=3000
+    volumes:
+      - ./data:/data
+    networks:
+      - web
+    restart: unless-stopped
+
+networks:
+  web:
+    name: web_default
+    external: true
