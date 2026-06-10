@@ -7,7 +7,7 @@ COPY . /build
 
 RUN GOOS=linux GOARCH=amd64 go build -o /shawty
 
-FROM alpine:3.19 AS runner
+FROM alpine:3.24 AS runner
 WORKDIR /data
 
 COPY --from=builder /shawty /bin/shawty
